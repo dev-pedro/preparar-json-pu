@@ -9,6 +9,7 @@ import processCsv from "./utils/process.Csv";
 import { isCPF, isCNPJ } from "validation-br";
 import splitIntoChunks from "./utils/splitIntoChunks";
 import downloadJson from "./utils/downloadJson";
+import Doc from "./utils/doc";
 
 // Definição de tipo para o objeto JSON
 interface Product {
@@ -145,7 +146,7 @@ export default function Home() {
   }, [rootCpfCnpj]);
 
   return (
-    <div className="bg-slate-100 text-gray-800 items-center justify-items-center min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="bg-slate-100 text-gray-800 items-center justify-items-center min-h-screen pb-1 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col w-full">
         <div className="py-4">
           <div>
@@ -292,7 +293,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div>
+        {<Doc />}
+        {/* <div>
           <div className="mt-8 p-6 bg-gray-100 rounded-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Como utilizar as Funcionalidades
@@ -405,7 +407,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

@@ -1,6 +1,16 @@
+# Preparar arquivos json (catalogo de produtos) para o PU
+
+Esta ferramenta auxilia na preparação de arquivos (json) para subida no catalogo de produtos no PU (Portla Único Siscomex).
+
+## Usuários
+Para acessar basta clicar no link abaixo.
+
+[Preparar arquivos para PU: https://preparar-json-pu.vercel.app/](https://preparar-json-pu.vercel.app/)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+##  Desenvolvedores
+### Getting Started
 
 First, run the development server:
 

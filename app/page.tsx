@@ -201,6 +201,7 @@ export default function Home() {
                     Unir semelhantes?
                   </span>
                   <input
+                    id="join"
                     type="checkbox"
                     value=""
                     checked={joinTheSame}
@@ -215,6 +216,7 @@ export default function Home() {
                     Dividir arquivo Json?
                   </span>
                   <input
+                    id="split"
                     type="checkbox"
                     value=""
                     checked={splitJsonFile}

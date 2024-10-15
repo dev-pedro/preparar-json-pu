@@ -146,11 +146,11 @@ export default function Home() {
   }, [rootCpfCnpj]);
 
   return (
-    <div className="bg-slate-100 text-gray-800 items-center justify-items-center min-h-screen pb-1 font-[family-name:var(--font-geist-sans)]">
+    <div className="dark:bg-gray-900 bg-slate-50 text-gray-700 items-center justify-items-center min-h-screen pb-1 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col w-full">
         <div className="py-4">
           <div>
-            <h1 className="w-full text-gray-500 text-center font-bold text-2xl pb-2">
+            <h1 className="w-full text-center font-bold text-2xl pb-2">
               Preparar Arquivos para PU
             </h1>
           </div>
@@ -170,15 +170,12 @@ export default function Home() {
           <div className="flex flex-col items-center p-2 w-full">
             <div className="w-11/12 md:w-12/12">
               <div className="">
-                <label
-                  className="font-bold sm:text-xl text-gray-500"
-                  htmlFor="cpf-cnpj"
-                >
+                <label className="font-bold sm:text-xl" htmlFor="cpf-cnpj">
                   Informe o CPF ou CNPJ
                 </label>
               </div>
               <Input
-                className="bg-green-200 hover:bg-green-300 mb-0 mt-2"
+                className="bg-green-300 hover:bg-green-400 mb-0 mt-2"
                 id="cpf-cnpj"
                 name="cpf-cnpj"
                 type="text"
@@ -198,7 +195,7 @@ export default function Home() {
               {/* switch toggle unir */}
               <div className="flex flex-col gap-1">
                 <label className="inline-flex justify-between cursor-pointer md:justify-end gap-2">
-                  <span className="ms-0 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  <span className="ms-0 text-sm font-medium">
                     Unir semelhantes?
                   </span>
                   <input
@@ -213,7 +210,7 @@ export default function Home() {
                 </label>
                 {/* switch toggle dividir */}
                 <label className="inline-flex justify-between cursor-pointer md:justify-end gap-2">
-                  <span className="ms-0 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  <span className="ms-0 text-sm font-medium">
                     Dividir arquivo Json?
                   </span>
                   <input
@@ -233,7 +230,7 @@ export default function Home() {
             {/* seção para pré testes */}
             <div className="bg-gray-50 w-full rounded-lg border px-3 py-2">
               <div className="relative flex items-center justify-center">
-                <p className="text-gray-500 font-bold text-xl text-center">
+                <p className="font-bold text-xl text-center">
                   Mudar/Atualizar CPF/CNPJ
                 </p>
               </div>
@@ -253,7 +250,7 @@ export default function Home() {
               </div>
               <div className="">
                 <button
-                  className="w-full bg-blue-200 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded"
+                  className="w-full bg-blue-200 hover:bg-blue-400 font-bold py-2 px-4 rounded"
                   onClick={() => handleUpdateRootCpfCnpj(rootCpfCnpj)}
                 >
                   ATUALIZAR
@@ -264,7 +261,7 @@ export default function Home() {
             {/* seção pós testes */}
             <div className="bg-gray-50 w-full rounded-lg border px-3 py-2">
               <div>
-                <p className="w-full text-gray-500 text-center font-bold text-xl">
+                <p className="w-full text-center font-bold text-xl">
                   Desativar de Produtos
                 </p>
               </div>
@@ -284,7 +281,7 @@ export default function Home() {
               </div>
               <div className="">
                 <button
-                  className="w-full bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded"
+                  className="w-full bg-red-300 hover:bg-red-400 font-bold py-2 px-4 rounded"
                   onClick={handleDeactivateProducts}
                 >
                   DESATIVAR

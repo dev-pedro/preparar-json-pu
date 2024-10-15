@@ -2,7 +2,7 @@ import React from "react";
 
 const Doc = () => {
   return (
-    <div className="px-6 md:px-14 pt-6 text-gray-800">
+    <div className="px-6 md:px-14 pt-6 text-gray-500 dark:bg-gray-900 bg-transparent">
       <h2 className="text-3xl font-semibold text-center mb-6">
         Como Utilizar as Funcionalidades
       </h2>

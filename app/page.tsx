@@ -171,14 +171,15 @@ export default function Home() {
               <div className="">
                 <label
                   className="font-bold sm:text-xl text-gray-500"
-                  htmlFor="test-result"
+                  htmlFor="cpf-cnpj"
                 >
                   Informe o CPF ou CNPJ
                 </label>
               </div>
               <Input
                 className="bg-green-200 hover:bg-green-300 mb-0 mt-2"
-                id="test-result"
+                id="cpf-cnpj"
+                name="cpf-cnpj"
                 type="text"
                 placeholder="Ex: 12345678000101"
                 maxLength={14}

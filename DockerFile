@@ -1,0 +1,27 @@
+# Etapa 1: Construção
+FROM node:18-alpine
+
+# Define o diretório de trabalho dentro do container
+WORKDIR /usr/src/app
+
+# Copia todos os arquivos do projeto para o diretório de trabalho do container
+COPY . .
+
+# Instala as dependências do projeto
+RUN npm install -y
+
+RUN npm run dev
+
+# Compila o projeto Next.js para produção
+RUN npm run build
+
+# Remove as dependências de desenvolvimento para otimização
+RUN npm prune --omit=dev
+
+# Expõe a porta em que a aplicação será executada
+EXPOSE 3000
+
+RUN npm 
+
+# Comando para iniciar o servidor Next.js
+CMD ["npm", "start"]

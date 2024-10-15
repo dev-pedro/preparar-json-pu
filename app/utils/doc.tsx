@@ -47,18 +47,25 @@ const Doc = () => {
         <h3 className="text-xl font-semibold mb-2">3. Desativar Produtos</h3>
         <p className="text-gray-700">
           Esta funcionalidade permite desativar produtos, alterando seu status
-          de "Ativado" para "Desativado". Para realizar a operação:
+          de "Ativado" para "Desativado". <br /> Para realizar a operação:
         </p>
         <ul className="list-disc list-inside pl-4 text-gray-700 mt-2">
           <li>
-            Selecione o arquivo CSV com o <strong>resultado do teste</strong>{" "}
-            clicando em <strong>"Escolher ficheiro"</strong> na seção "Desativar
-            de Produtos".
+            Selecione o arquivo CSV (resultado do import) que foi baixado do PU
+            durante o import do catalogo com o{" "}
+            <strong>resultado do teste</strong> clicando em{" "}
+            <strong>"Escolher ficheiro"</strong> na seção "Desativar de
+            Produtos".
           </li>
           <li>
             Após a seleção, clique no botão{" "}
             <strong className="text-red-400">"DESATIVAR"</strong> para concluir
             a operação.
+          </li>
+          <li>
+            Será gerado e baixado para a pasta "Downloads" o(s) arquivo(s),
+            volte ao PU e faça o import desse(s) arquivos para efetivar a
+            desativação.
           </li>
         </ul>
         <p className="text-red-500 mt-2">

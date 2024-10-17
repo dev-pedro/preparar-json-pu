@@ -10,7 +10,7 @@ export default function processCsv(csvData: string) {
     // Remove aspas extras de cada valor
     sequencial = sequencial.replace(/"/g, "");
     codigo = codigo.replace(/"/g, "");
-    //console.log(codigo); // Verificação para visualizar o código sem o \r e aspas
+     // Verificação para visualizar o código sem o \r e aspas
 
     if (sequencial && codigo) {
       codigoDict[sequencial] = codigo;

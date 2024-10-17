@@ -5,11 +5,17 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import unifiedJasonProduct from "./utils/unifiedJson";
-import processCsv from "./utils/process.Csv";
+import processCsv from "./utils/process.csv";
 import { isCPF, isCNPJ } from "validation-br";
 import splitIntoChunks from "./utils/splitIntoChunks";
 import downloadJson from "./utils/downloadJson";
 import Doc from "./utils/doc";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@radix-ui/react-accordion";
 
 // Definição de tipo para o objeto JSON
 interface Product {
@@ -21,11 +27,20 @@ interface Product {
 
 export default function Home() {
   const [jsonFile, setJsonFile] = useState<any | null>(null);
+  const [jsonFileUpdated, setJsonFileUpdated] = useState<any | null>(null);
+  const [jsonProductUnified, setJsonProductUnified] = useState<any | null>(
+    null
+  );
+  const [jsonFileDesativated, setJsonFileDesativated] = useState<any | null>(
+    null
+  );
   const [csvFile, setCsvFile] = useState<Record<string, string> | null>(null);
   const [rootCpfCnpj, setRootCpfCnpj] = useState<string>("");
   const [notification, setNotification] = useState<string>("");
+  const [allowDownload, setAllowDownload] = useState(false);
+  const [allowDownloadDesativate, setallowDownloadDesativate] = useState(false);
   const [docValid, setDocValid] = useState(false);
-  const [joinTheSame, setJoinTheSame] = useState(false);
+  //const [joinTheSame, setJoinTheSame] = useState(false);
   const [splitJsonFile, setSplitJsonFile] = useState(false);
 
   // Função para mostrar uma menssagem ao usuário
@@ -69,21 +84,25 @@ export default function Home() {
     }
   };
 
+  const cpfCnpjValidate = () => isCPF(rootCpfCnpj) || isCNPJ(rootCpfCnpj);
+
   // Função para inserir/atualizar o CPF/CNPJ raiz
-  const handleUpdateRootCpfCnpj = (cpfCnpj: string) => {
-    const validate = isCPF(cpfCnpj) || isCNPJ(cpfCnpj);
+  const updateJsonWithCpfCnpj = () => {
+    const validate = cpfCnpjValidate();
 
     if (!validate) {
       setNotification(`CPF/CNPJ inválido 🧐`);
       setDocValid(false);
-      return;
     } else {
       setNotification("Documento válido 😎");
+      const rootCpfCnpjValue = isCPF(rootCpfCnpj)
+        ? rootCpfCnpj
+        : rootCpfCnpj.slice(0, 8);
+
       setDocValid(true);
     }
-    const rootCpfCnpj = isCPF(cpfCnpj) ? cpfCnpj : cpfCnpj.slice(0, 8);
 
-    if (validate) {
+    if (jsonFile && validate) {
       const updatedJson = jsonFile.map((item: any) => {
         if (item.seq) {
           const cpfRoot = rootCpfCnpj?.replace(/\D/g, "");
@@ -92,52 +111,61 @@ export default function Home() {
         return item;
       });
 
-      setJsonFile(updatedJson);
+      setJsonFileUpdated(updatedJson);
 
-      // Chama a função para unificar os produtos do JSON com a "descricao" ou "denominacao" e mesma NCM
-      if (joinTheSame && splitJsonFile) {
-        const jsonUpdateJsonUnified = unifiedJasonProduct(jsonFile);
-        const chunksFiles = splitIntoChunks(jsonUpdateJsonUnified, 100);
-        downloadJson(chunksFiles, "ativado", rootCpfCnpj);
-      } else if (splitJsonFile) {
-        const chunksFiles = splitIntoChunks(jsonFile, 100);
-        // Download dos arquivos gerados
-        downloadJson(chunksFiles, "ativado", rootCpfCnpj);
-        return;
-      } else if (joinTheSame) {
-        const jsonUpdateJsonUnified = unifiedJasonProduct(jsonFile);
-        // Download dos arquivos gerados
-        downloadJson([jsonUpdateJsonUnified], "ativado", rootCpfCnpj);
-        return;
-      } else {
-        // Download dos arquivos gerados
-        downloadJson([jsonFile], "ativado", rootCpfCnpj);
-      }
+      const jsonUpdateJsonUnified = unifiedJasonProduct(updatedJson);
+      jsonUpdateJsonUnified.produtosUnificados.sort(
+        (a: any, b: any) => a.seq - b.seq
+      );
+      setJsonProductUnified(jsonUpdateJsonUnified);
     } else {
-      showMessage("Por favor, selecione os arquivos JSON corretamente.");
+      showMessage(
+        "Por favor, selecione o arquivo JSON corretamente e informe o CPF/CNPJ."
+      );
+      setAllowDownload(false);
     }
+  };
+
+  const downloadProduct = (
+    product: any,
+    situacao: string,
+    rootCpfCnpjValue: string,
+    text: string
+  ) => {
+    const isValidate = cpfCnpjValidate();
+    if (!isValidate || !jsonFile) {
+      showMessage(
+        "Por favor, insira o CPF/CNPJ corretamente e selecione o arquivo JSON corretamente."
+      );
+      return;
+    }
+
+    if (splitJsonFile) {
+      const chunksFiles = splitIntoChunks(product, 100);
+      downloadJson(chunksFiles, situacao, rootCpfCnpjValue, text);
+      return;
+    }
+    downloadJson([product], situacao, rootCpfCnpjValue, text);
   };
 
   // Função para desativar os produtos, gerar novo JSON e dividir em partes de 100 itens
   const handleDeactivateProducts = () => {
-    if (jsonFile && csvFile) {
+    if (jsonFileUpdated && csvFile) {
       // Atualiza os produtos com as informações do CSV e desativa
-      const updatedJson = jsonFile.map((item: any) => {
+      const updatedJson = jsonFileUpdated.map((item: any) => {
         if (item.seq && csvFile[item.seq]) {
           item.codigo = csvFile[item.seq];
         }
-        item.situacao = "Desativado";
+        //item.situacao = "Desativado";
         return item;
       });
-
-      // Divide o JSON atualizado em partes de 100 itens
-      const chunks = splitIntoChunks(updatedJson, 100);
-      // Download dos arquivos gerados
-      downloadJson(chunks, "desativado", rootCpfCnpj);
+      setJsonFileDesativated(updatedJson);
     } else {
       showMessage("Por favor, selecione os arquivos JSON e CSV corretamente.");
+      setallowDownloadDesativate(false);
     }
   };
+
   useEffect(() => {
     if (rootCpfCnpj.length > 0) {
       setNotification("");
@@ -145,9 +173,36 @@ export default function Home() {
     }
   }, [rootCpfCnpj]);
 
+  useEffect(() => {
+    if (jsonProductUnified) {
+      setAllowDownload(true);
+    }
+  }, [jsonProductUnified]);
+
+  useEffect(() => {
+    if (jsonFileDesativated && csvFile) {
+      setallowDownloadDesativate(true);
+    }
+  }, [jsonFileDesativated, csvFile]);
+
+  useEffect(() => {
+    if (!jsonFile) {
+      setAllowDownload(false);
+      setallowDownloadDesativate(false);
+      setJsonProductUnified(null);
+      setJsonFileUpdated(null);
+      setJsonFileDesativated(null);
+      setCsvFile(null);
+      setRootCpfCnpj("");
+      setDocValid(false);
+      setSplitJsonFile(false);
+      setNotification("");
+    }
+  }, [jsonFile]);
+
   return (
     <div className="dark:bg-gray-900 bg-slate-50 text-gray-700 items-center justify-items-center min-h-screen pb-1 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col w-full">
+      <main className="flex flex-col w-full items-center">
         <div className="py-4">
           <div>
             <h1 className="w-full text-center font-bold text-2xl pb-2">
@@ -194,24 +249,10 @@ export default function Home() {
               </p>
               {/* switch toggle unir */}
               <div className="flex flex-col gap-1">
-                <label className="inline-flex justify-between cursor-pointer md:justify-end gap-2">
-                  <span className="ms-0 text-sm font-medium">
-                    Unir semelhantes?
-                  </span>
-                  <input
-                    id="join"
-                    type="checkbox"
-                    value=""
-                    checked={joinTheSame}
-                    className="sr-only peer"
-                    onChange={(e) => setJoinTheSame(e.target.checked)}
-                  />
-                  <div className="relative w-9 h-5 mb-1 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                </label>
                 {/* switch toggle dividir */}
                 <label className="inline-flex justify-between cursor-pointer md:justify-end gap-2">
                   <span className="ms-0 text-sm font-medium">
-                    Dividir arquivo Json?
+                    Dividir arquivo Json em partes de 100 ?
                   </span>
                   <input
                     id="split"
@@ -228,7 +269,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col md:flex-row gap-2 w-11/12 md:w-12/12">
             {/* seção para pré testes */}
-            <div className="bg-gray-50 w-full rounded-lg border px-3 py-2">
+            <div className="bg-white w-full rounded-lg border px-3 py-2">
               <div className="relative flex items-center justify-center">
                 <p className="font-bold text-xl text-center">
                   Mudar/Atualizar CPF/CNPJ
@@ -251,18 +292,48 @@ export default function Home() {
               <div className="">
                 <button
                   className="w-full bg-blue-200 hover:bg-blue-400 font-bold py-2 px-4 rounded"
-                  onClick={() => handleUpdateRootCpfCnpj(rootCpfCnpj)}
+                  onClick={() => updateJsonWithCpfCnpj()}
                 >
                   ATUALIZAR
                 </button>
               </div>
+              {allowDownload && (
+                <div className="flex gap-2 py-2">
+                  <button
+                    className="w-full bg-blue-200 hover:bg-blue-400 font-bold py-2 px-4 rounded"
+                    onClick={() =>
+                      downloadProduct(
+                        jsonProductUnified?.produtosUnificados,
+                        "ativado",
+                        rootCpfCnpj,
+                        "unidos"
+                      )
+                    }
+                  >
+                    Baixar Unidos
+                  </button>
+                  <button
+                    className="w-full bg-blue-200 hover:bg-blue-400 font-bold py-2 px-4 rounded"
+                    onClick={() =>
+                      downloadProduct(
+                        jsonFileUpdated,
+                        "ativado",
+                        rootCpfCnpj,
+                        "sem_unir"
+                      )
+                    }
+                  >
+                    Baixar sem Unir
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* seção pós testes */}
-            <div className="bg-gray-50 w-full rounded-lg border px-3 py-2">
+            <div className="bg-white w-full rounded-lg border px-3 py-2">
               <div>
                 <p className="w-full text-center font-bold text-xl">
-                  Desativar de Produtos
+                  Desativar Produtos
                 </p>
               </div>
               <div className="w-full text-xs">
@@ -287,9 +358,82 @@ export default function Home() {
                   DESATIVAR
                 </button>
               </div>
+              {allowDownloadDesativate && (
+                <div className="flex gap-2 py-2">
+                  <button
+                    className="w-full bg-blue-200 hover:bg-blue-400 font-bold py-2 px-4 rounded"
+                    onClick={() =>
+                      downloadProduct(
+                        jsonFileDesativated,
+                        "Desativado",
+                        rootCpfCnpj,
+                        "desativado"
+                      )
+                    }
+                  >
+                    Baixar Desativados
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
+        {/* Show info */}
+        <div className="flex flex-col gap-4 w-11/12 border mt-4 bg-white rounded-lg p-4 shadow">
+          <div>
+            <div className="flex justify-between">
+              <h2 className="text-base font-semibold">Total de códigos (PN)</h2>
+              <span className="text-base font-semibold">
+                {jsonProductUnified?.totalCodigos}
+              </span>
+            </div>
+            <div className="flex justify-between mt-1">
+              <h2 className="text-base font-semibold">
+                Total de produtos após unir os idênticos
+              </h2>
+              <span className="text-base font-semibold">
+                {jsonProductUnified?.totalProdutos}
+              </span>
+            </div>
+          </div>
+
+          {/* Produtos Dinâmicos */}
+          <div className="pt-2">
+            <Accordion type="single" collapsible className="w-full">
+              <h3 className="text-lg font-bold mb-2">Produtos</h3>
+
+              {jsonProductUnified?.produtosUnificados?.map((produto: any) => (
+                <AccordionItem
+                  key={produto?.seq}
+                  value={`item-${produto?.seq}`}
+                  className="text-base font-medium"
+                >
+                  <AccordionTrigger className="flex items-center w-full">
+                    <p className="pr-2">{produto?.seq}</p>
+                    <p>{produto?.denominacao}</p>
+                    <span className="ml-auto text-sm font-light">
+                      Qtd. cód.: {produto?.codigosInterno.length}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm font-normal pl-6 mt-2">
+                    <p>
+                      Descrição:{" "}
+                      {produto?.descricao
+                        ? produto?.descricao
+                        : "Não havia descrição do produto"}
+                    </p>
+                    <p className="mt-1">Códigos agrupados:</p>
+                    <div className="pl-2">
+                      {produto?.codigosInterno.join(", ")}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+
+        {/* Documentação */}
         {<Doc />}
       </main>
     </div>

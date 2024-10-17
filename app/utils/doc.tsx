@@ -2,119 +2,143 @@ import React from "react";
 
 const Doc = () => {
   return (
-    <div className="px-6 md:px-14 pt-6 text-gray-500 dark:bg-gray-900 bg-transparent">
+    <div className="p-8 bg-gray-50 text-gray-500">
       <h2 className="text-3xl font-semibold text-center mb-6">
         Como Utilizar as Funcionalidades
       </h2>
 
+      {/* <!-- CPF/CNPJ --> */}
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2">1. Informe o CPF ou CNPJ</h3>
-        <p className="text-gray-700">
-          Na parte superior da página, insira o número do CPF ou CNPJ no campo
-          destacado em verde. Esse campo segue o formato correto de CPF ou CNPJ,
-          como mostrado no exemplo (Ex: 12345678000101). Esse dado é necessário
-          para realizar as operações de atualização ou desativação de produtos.
+        <p className="className">
+          No campo destacado em verde no topo da página, insira o número do CPF
+          ou CNPJ no formato correto (Ex: 04301504000100). O sistema validará
+          automaticamente o número informado. Caso seja válido, uma mensagem
+          indicará que o documento está correto, permitindo prosseguir com as
+          operações.
         </p>
       </div>
 
+      {/* <!-- Mudar/Atualizar CPF/CNPJ --> */}
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2">
           2. Mudar/Atualizar CPF/CNPJ
         </h3>
-        <p className="text-gray-700">
-          Esta funcionalidade permite alterar ou atualizar o CPF ou CNPJ nos
-          produtos contidos em um arquivo JSON. Para isso, siga os passos
-          abaixo:
+        <p className="className">
+          Para alterar ou atualizar o CPF ou CNPJ em produtos listados em um
+          arquivo JSON, siga os passos abaixo:
         </p>
-        <ul className="list-disc list-inside pl-4 text-gray-700 mt-2">
+        <ul className="list-disc list-inside pl-4 className mt-2">
           <li>
-            Escolha o arquivo JSON contendo os produtos que deseja atualizar
-            clicando em <strong>"Escolher ficheiro"</strong>.
+            Selecione o arquivo JSON contendo os produtos clicando em{" "}
+            <strong>"Escolher ficheiro"</strong>.
           </li>
           <li>
-            Após selecionar o arquivo, clique no botão
-            <strong className="text-blue-600">"ATUALIZAR"</strong> para aplicar
-            as mudanças.
+            Clique no botão <strong>"ATUALIZAR"</strong> para aplicar as
+            mudanças de CPF/CNPJ aos produtos.
+          </li>
+          <li>
+            Após validar o CPF/CNPJ e carregar o arquivo corretamente,
+            aparecerão duas opções:
+            <strong>"Baixar Unidos"</strong> e{" "}
+            <strong>"Baixar sem Unir"</strong>.
+          </li>
+          <li>
+            O botão <strong>"Baixar Unidos"</strong> permite baixar o arquivo
+            com produtos agrupados, caso tenham denominação ou descrição
+            idênticas.
+          </li>
+          <li>
+            O botão <strong>"Baixar sem Unir"</strong> permite baixar o arquivo
+            sem agrupar os produtos.
           </li>
         </ul>
-        <p className="text-orange-500 mt-2">
-          Observação: O CPF/CNPJ será inserido ou atualizado em todos os
-          produtos presentes no arquivo.
-        </p>
       </div>
 
+      {/*  <!-- Desativar Produtos --> */}
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2">3. Desativar Produtos</h3>
-        <p className="text-gray-700">
-          Esta funcionalidade permite desativar produtos, alterando seu status
-          de "Ativado" para "Desativado". <br /> Para realizar a operação:
+        <p className="className">
+          Esta funcionalidade permite desativar produtos listados em um arquivo
+          JSON, alterando seu status de "Ativado" para "Desativado". Para
+          realizar a operação:
         </p>
-        <ul className="list-disc list-inside pl-4 text-gray-700 mt-2">
+        <ul className="list-disc list-inside pl-4 className mt-2">
           <li>
-            Selecione o arquivo CSV (resultado do import) que foi baixado do PU
-            durante o import do catalogo com o{" "}
-            <strong>resultado do teste</strong> clicando em{" "}
-            <strong>"Escolher ficheiro"</strong> na seção "Desativar de
-            Produtos".
+            Selecione o arquivo CSV com os resultados dos testes clicando em{" "}
+            <strong>"Escolher ficheiro"</strong>.
           </li>
           <li>
-            Após a seleção, clique no botão{" "}
-            <strong className="text-red-400">"DESATIVAR"</strong> para concluir
-            a operação.
+            Após a validação e o carregamento correto dos arquivos, o botão{" "}
+            <strong>"DESATIVAR"</strong> ficará habilitado para concluir a
+            operação.
           </li>
           <li>
-            Será gerado e baixado para a pasta "Downloads" o(s) arquivo(s),
-            volte ao PU e faça o import desse(s) arquivos para efetivar a
-            desativação.
+            Depois de desativar os produtos, aparecerá a opção{" "}
+            <strong>"Baixar Desativados"</strong>, que permite o download da
+            lista de produtos desativados.
           </li>
         </ul>
-        <p className="text-red-500 mt-2">
-          Atenção: Todos os produtos listados no arquivo serão marcados para
-          desativação.
+        <p className="className mt-1 text-red-400">
+          <span className="font-bold">Atenção: </span> Todos os produtos
+          listados no arquivo serão desativados.
         </p>
       </div>
 
+      {/*  <!-- Opções após validação --> */}
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2">
-          4. Opções de Unir Semelhantes e Dividir Arquivo JSON
+          4. Informações Adicionais
         </h3>
-        <p className="text-gray-700">
-          Na parte direita da tela, há duas opções adicionais que podem ser
-          ativadas:
+        <p className="className">
+          Após a validação correta do CPF/CNPJ e o carregamento dos arquivos,
+          algumas informações extras aparecerão na tela:
         </p>
-        <ul className="list-disc list-inside pl-4 text-gray-700 mt-2">
+        <ul className="list-disc list-inside pl-4 className mt-2">
           <li>
-            <strong>Unir semelhantes?</strong>: Marque esta opção se quiser
-            agrupar produtos cujas denominações ou descrições sejam idênticas
-            durante a atualização.
+            <strong>Total de códigos (PN):</strong> Exibe o número total de
+            códigos de produtos no arquivo.
           </li>
           <li>
-            <strong>Dividir arquivo JSON?</strong>: Ative esta opção se quiser
-            dividir o arquivo JSON automaticamente contendo 100 produtos por
-            arquivo de acordo com o PU.
+            <strong>Total de produtos após unir os idênticos:</strong> Mostra o
+            número de produtos após a unificação, caso a opção "Baixar Unidos"
+            seja usada.
           </li>
         </ul>
-      </div>
 
-      <div>
-        <h3 className="text-xl font-semibold mb-2">5. Acesso ao Siscomex</h3>
-        <p className="text-gray-700">
-          No canto superior direito da página, há um botão{" "}
-          <strong className="font-bold text-blue-500">Siscomex</strong> que
-          permite acessar diretamente o sistema Siscomex para realizar operações
-          relacionadas à importação e exportação de produtos.
+        <h4 className="text-lg font-semibold mt-4">Lista de Produtos</h4>
+        <p className="className">
+          Uma lista de produtos com suas quantidades será exibida após o
+          carregamento do arquivo, permitindo verificar os detalhes antes de
+          prosseguir com a atualização ou desativação.
+        </p>
+        <p className="mt-1 text-green-600">
+          <span className="font-bold">Obs: </span>É possível expandir os itens
+          da lista para ver mais detalhes.
         </p>
       </div>
 
-      <div className="flex justify-center content-end text-gray-700 text-sm mt-4 mb-2">
-        <p>
-          Developed by:{" "}
-          <a
-            href="https://github.com/dev-pedro"
-            className="text-blue-500 hover:underline"
-          >
-            Pedro Henrique
-          </a>
+      {/* <!-- Opções de Divisão de Arquivo --> */}
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-2">
+          5. Dividir Arquivo JSON em Partes de 100
+        </h3>
+        <p className="className">
+          Caso necessário, é possível ativar a opção{" "}
+          <strong>"Dividir arquivo JSON em partes de 100"</strong> no canto
+          superior direito da tela. Esta funcionalidade divide o arquivo JSON em
+          múltiplos arquivos, cada um contendo até 100 produtos.
+        </p>
+      </div>
+
+      {/* !-- Acesso ao Siscomex -- */}
+      <div>
+        <h3 className="text-xl font-semibold mb-2">6. Acesso ao Siscomex</h3>
+        <p className="className">
+          No canto superior direito, você pode clicar no botão{" "}
+          <strong>Siscomex</strong> para acessar diretamente o sistema Siscomex
+          e realizar operações relacionadas à importação e exportação de
+          produtos.
         </p>
       </div>
     </div>

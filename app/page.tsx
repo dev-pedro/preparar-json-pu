@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import unifiedJasonProduct from "./utils/unifiedJson";
-import processCsv from "./utils/process.csv";
+import processCsv from "./utils/processCsv";
 import { isCPF, isCNPJ } from "validation-br";
 import splitIntoChunks from "./utils/splitIntoChunks";
 import downloadJson from "./utils/downloadJson";

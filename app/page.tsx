@@ -406,7 +406,7 @@ export default function Home() {
                 <AccordionItem
                   key={produto?.seq}
                   value={`item-${produto?.seq}`}
-                  className="text-base font-medium"
+                  className="text-base font-medium border-dotted border-b-2"
                 >
                   <AccordionTrigger className="flex items-center w-full">
                     <p className="pr-2">{produto?.seq}</p>

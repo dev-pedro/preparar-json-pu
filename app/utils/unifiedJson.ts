@@ -1,14 +1,25 @@
 // Função para unificar os produtos do JSON com a "descricao" ou "denominacao" e mesma NCM
 export default function unifiedJsonProduct(jsonProduct: any[]) {
-  // Usar reduce para agrupar os produtos por "descricao" ou "denominacao"
+  // Usar reduce para agrupar os produtos por "descricao" , "denominacao" ou atributos idênticos
   const unificados = jsonProduct.reduce((acc: any, produto: any) => {
-    // Determinar a chave de agrupamento com "descricao" ou "denominacao" + NCM
-    const chave = `${produto.descricao.trim()}_${produto.denominacao.trim()}_${produto.ncm.trim()}_${JSON.stringify(
-      produto.atributos
-    ).trim()}`;
+    // Função para remover ".", "," ou ";" do final do texto, se houver
+    const removePontuacaoFinal = (texto: string) => {
+      return texto
+        .trim()
+        .replace(/[.,;]$/, "")
+        .trim();
+    };
 
-    produto.denominacao = produto.denominacao.trim();
-    produto.descricao = produto.descricao.trim();
+    // Determinar a chave de agrupamento com "descricao" ou "denominacao" + NCM
+    const chave = `${removePontuacaoFinal(
+      produto.descricao
+    )}_${removePontuacaoFinal(
+      produto.denominacao
+    )}_${produto.ncm.trim()}_${JSON.stringify(produto.atributos).trim()}`;
+
+    // Remover pontuações no final de "denominacao" e "descricao"
+    produto.denominacao = removePontuacaoFinal(produto.denominacao);
+    produto.descricao = removePontuacaoFinal(produto.descricao);
 
     // Verifica se já existe um produto com a mesma chave (descricao/denominacao + NCM)
     if (!acc[chave]) {
@@ -26,10 +37,9 @@ export default function unifiedJsonProduct(jsonProduct: any[]) {
       ];
     }
 
-    
     return acc;
   }, {});
-  
+
   // Converter o objeto de agrupamento para um array de produtos unificados
   const produtosUnificados = Object.values(unificados);
 

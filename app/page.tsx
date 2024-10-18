@@ -156,7 +156,7 @@ export default function Home() {
         if (item.seq && csvFile[item.seq]) {
           item.codigo = csvFile[item.seq];
         }
-        //item.situacao = "Desativado";
+        item.situacao = "Desativado";
         return item;
       });
       setJsonFileDesativated(updatedJson);

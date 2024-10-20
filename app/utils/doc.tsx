@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const Doc = () => {
   return (
@@ -141,8 +141,20 @@ const Doc = () => {
           produtos.
         </p>
       </div>
+      <div>
+        <div className="flex justify-center mt-8">
+          <a
+            href="https://github.com/dev-pedro"
+            target="_blank"
+            className="px-4 py-2 text-blue-500 font-semibold font-serif"
+          >
+            <span className="text-gray-500 font-semibold">Develope by - </span>{" "}
+            Pedro Henrique
+          </a>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Doc;
+export default Doc

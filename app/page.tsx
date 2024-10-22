@@ -142,7 +142,7 @@ export default function Home() {
 
     if (splitJsonFile) {
       const chunksFiles = splitIntoChunks(product, 100);
-      downloadJson(chunksFiles, situacao, rootCpfCnpjValue, text);
+      downloadJson(chunksFiles, situacao, rootCpfCnpjValue, `${text}_split`);
       return;
     }
     downloadJson([product], situacao, rootCpfCnpjValue, text);

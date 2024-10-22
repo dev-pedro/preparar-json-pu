@@ -16,8 +16,6 @@ export default function downloadJson(
       type: "application/json",
     });
 
-    console.log(arrayTotal);
-
     // Cria um nome de arquivo para cada parte, ex: 'produtos_desativados_parte_1.json'
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);

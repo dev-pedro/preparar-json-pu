@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const Doc = () => {
   return (
@@ -7,6 +7,25 @@ const Doc = () => {
         Como Utilizar as Funcionalidades
       </h2>
 
+      <div>
+        <h3 className="text-xl font-semibold">Descrição:</h3>
+        <p>
+          Esta ferramenta basicamente faz a comparação de produtos contidos em
+          um arquivo "JSON".
+          <br />
+          Ela verifica produtos semelhantes/idêntico baseado na "Denominação do
+          produto", "Descrição do produto" e nos "Atributos", com base na
+          comparação dessas três informações considera um produto
+          semelhante/idêntico caso encontre outros produtos iguais, e uni os PNs
+          dos produtos em um único produto dentro da chave "codigoInterno".
+          <br />
+          Também é possível visualizar algumas informações dos produtos na mesma
+          tela, como os PNs unificados bem como a descrição e denominação dos
+          mesmos.
+        </p>
+        <p></p>
+        <p className="mb-6"></p>
+      </div>
       {/* <!-- CPF/CNPJ --> */}
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-2">1. Informe o CPF ou CNPJ</h3>
@@ -154,7 +173,7 @@ const Doc = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Doc
+export default Doc;
